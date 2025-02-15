@@ -1,27 +1,37 @@
 .quizContainer {
+  /* Center and constrain the container */
+  max-width: 600px;
+  margin: 2rem auto;
+  
   background: #fff;
   padding: 20px 30px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s;
-  margin-bottom: 1rem;
 }
 
-.question {
-  font-size: 1.1em;
-  margin-bottom: 0.25em;
+/* Minimal top bar for persona/verb info */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
-.translation {
-  font-size: 0.9em;
-  color: #666;
-  margin-bottom: 1em;
+.personaVerb {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* Input & buttons area */
+.answerSection {
+  margin-bottom: 1.5rem;
 }
 
 .input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  margin: 0.75rem 0;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -29,13 +39,13 @@
 }
 
 .buttonContainer {
-  margin-bottom: 1em;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-/* Scope button styles to .quizContainer */
 .quizContainer button {
   padding: 10px 20px;
-  margin-right: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -44,17 +54,44 @@
   background-color: #3498db;
 }
 
+/* Feedback & Explanation */
 .result {
-  margin-top: 15px;
+  margin-top: 1rem;
   font-size: 1.2em;
   font-weight: bold;
   min-height: 1.4em;
 }
 
 .explanation {
-  margin-top: 10px;
+  margin-top: 0.5rem;
   color: #555;
   line-height: 1.4;
+}
+
+/* Example Card */
+.exampleCard {
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.cardTitle {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.cardSentence {
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.4;
+  font-size: 1.05em;
+}
+
+.wordTranslations p {
+  margin: 0.25rem 0;
 }
 
 /* Glow animations for correct/wrong answers */
