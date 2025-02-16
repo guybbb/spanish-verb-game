@@ -6,6 +6,7 @@ import styles from "./Quiz.module.css";
 export default function Quiz({ question, onAnswer }) {
   // Suppose `question` has `verb`, `correctAnswer`, and optionally `tense`.
   const { verb, correctAnswer, tense, person } = question;
+  console.log(tense);
 
   // Manage user input and quiz flow
   const [userAnswer, setUserAnswer] = useState("");
@@ -82,7 +83,7 @@ export default function Quiz({ question, onAnswer }) {
         // Minimal prompt referencing the verb
         const prompt = `
 You are helping a student practice Spanish conjugation.
-Use the Spanish verb "${verb}" with ${person} but replavce the verb with a blank (____).
+Use the Spanish verb "${verb}" with person:${person} in tense:${tense} but replavce the verb with a blank (____).
 Return strictly JSON with:
 {
   "sentence": "...",

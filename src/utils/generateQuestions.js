@@ -5,10 +5,10 @@ import { verbos } from "verbos";
 const personLabels = {
   yo: "yo",
   tu: "tú",
-//   ud: "usted",
+  ud: "usted",
   nosotros: "nosotros",
   vosotros: "vosotros",
-//   uds: "ustedes",
+  uds: "ustedes",
 };
 
 /**
@@ -43,7 +43,8 @@ export function generateQuestionsForTense(selectedTense) {
 
       return {
         verb: verbData.infinitivo,
-        person,
+        tense:selectedTense,
+        person: personLabels[person] ,
         questionText,
         translation,
         correctAnswer,
