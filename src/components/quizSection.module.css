@@ -1,0 +1,8 @@
+.score {
+    max-width: 600px;
+    margin: 1rem auto;
+    padding: 0 1.5rem;
+    text-align: center;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }

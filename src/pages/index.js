@@ -1,9 +1,8 @@
-"use client";
 import { useState } from "react";
 import { generateQuestionsForTense } from "../utils/generateQuestions";
 import QuizSection from "../components/QuizSection";
+import styles from "../components/Home.module.css";
 
-// Define which tenses you want to support
 const tenses = ["presente", "preterito", "imperfecto", "futuro"];
 
 export default function Home() {
@@ -17,26 +16,23 @@ export default function Home() {
   };
 
   if (selectedTense) {
-    return (
-      <QuizSection
-        title={`Tense: ${selectedTense.toUpperCase()}`}
-        questions={questions}
-      />
-    );
+    return <QuizSection title={selectedTense} questions={questions} />;
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Pick a Tense for the Lesson</h1>
-      <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+    <main className={styles.container}>
+      <h1 className={styles.title}>Pick a Tense for the Lesson</h1>
+      <div className={styles.grid}>
         {tenses.map((tense) => (
-          <li key={tense} style={{ margin: "1rem 0" }}>
-            <button onClick={() => handlePickTense(tense)}>
-              {tense.toUpperCase()}
-            </button>
-          </li>
+          <button
+            key={tense}
+            className={styles.tenseButton}
+            onClick={() => handlePickTense(tense)}
+          >
+            {tense.toUpperCase()}
+          </button>
         ))}
-      </ul>
+      </div>
     </main>
   );
 }

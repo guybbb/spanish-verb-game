@@ -28,16 +28,15 @@ export default function Quiz({ question, onAnswer }) {
     if (!isSubmitted) return sentence; // Show blank until user submits
 
     const [beforeBlank, afterBlank] = sentence.split("____");
-    const verbElement = isCorrect ? (
-      correctAnswer
-    ) : (
-      <span style={{ color: "red" }}>{correctAnswer}</span>
-    );
-
+    const verbStyle = {
+      color: isCorrect ? "#22c55e" : "#ef4444",  // green-500 for correct, red-500 for wrong
+      fontWeight: "600"
+    };
+  
     return (
       <>
         {beforeBlank}
-        {verbElement}
+        <span style={verbStyle}>{correctAnswer}</span>
         {afterBlank}
       </>
     );
@@ -52,7 +51,9 @@ export default function Quiz({ question, onAnswer }) {
     setIsSubmitted(true);
     const correct = checkAnswer(userAnswer);
     setIsCorrect(correct);
-    setResult(correct ? "Correct! 🎉" : `Wrong! ❌ (Correct: ${correctAnswer})`);
+    setResult(
+      correct ? "Correct! 🎉" : `Wrong! ❌ (Correct: ${correctAnswer})`
+    );
     setShowExplanation(false);
     setExplanation("");
   };
@@ -111,74 +112,66 @@ Where:
   }, [verb]);
 
   return (
-    <div
-      className={`${styles.quizContainer} ${
-        result ? (isCorrect ? styles.correctFeedback : styles.wrongFeedback) : ""
-      }`}
-    >
-      {/* 1. Title / Tense */}
-      <header className={styles.headerSection}>
-        {tense && (
-          <h2 className={styles.tenseTitle}>
-            Tense: {tense.toUpperCase()} Quiz
-          </h2>
-        )}
-        <p className={styles.personaVerb}>
-          <strong>Persona / Verb:</strong> {verb.toUpperCase()}
-        </p>
-      </header>
-
-      {/* 2. Example Sentence (Context) */}
-      {exampleData && (
-        <section className={styles.exampleCard}>
-          <h4 className={styles.cardTitle}>Example Sentence</h4>
-          <p className={styles.cardSentence}>
-            {loadingExample
-              ? "Loading..."
-              : getFullSentence(exampleData.sentence)}
-          </p>
-          <div className={styles.wordTranslations}>
-            {Object.entries(exampleData.wordTranslations).map(
-              ([word, trans]) => (
+      <div className={styles.quizContainer}>
+        <header className={styles.header}>
+          <div className={styles.progressBar}>
+            <div className={styles.progressTrack}>
+              <div className={styles.progressFill} style={{ width: '30%' }} />
+            </div>
+            <span className={styles.progressText}>Question 3/10</span>
+          </div>
+          <div className={styles.personaVerb}>{verb.toUpperCase()}</div>
+        </header>
+  
+      <main className={styles.mainContent}>
+        {exampleData && (
+          <section className={styles.exampleCard}>
+            <p className={styles.cardSentence}>
+              {loadingExample ? "Loading..." : getFullSentence(exampleData.sentence)}
+            </p>
+            <div className={styles.wordTranslations}>
+              {Object.entries(exampleData.wordTranslations).map(([word, trans]) => (
                 <p key={word}>
                   <strong>{word}</strong>: {trans}
                 </p>
-              )
-            )}
-          </div>
+              ))}
+            </div>
+          </section>
+        )}
+  
+        <section className={styles.answerSection}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (!isSubmitted && userAnswer.trim()) {
+              handleSubmit();
+            } else if (isSubmitted) {
+              handleNext();
+            }
+          }}>
+            <input
+              type="text"
+              className={styles.input}
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              placeholder="Type your answer here"
+              disabled={isSubmitted}
+              autoFocus
+            />
+            <div className={styles.buttonContainer}>
+              <button 
+                className={`${styles.button} ${
+                  !isSubmitted ? styles.buttonNeutral 
+                  : isCorrect ? styles.buttonCorrect 
+                  : styles.buttonWrong
+                }`}
+                disabled={!isSubmitted && !userAnswer.trim()}
+              >
+                {!isSubmitted ? 'Submit' : 'Continue'}
+              </button>
+            </div>
+          </form>
         </section>
-      )}
-
-      {/* 3. Answer Input & Buttons */}
-      <section className={styles.answerSection}>
-        <label htmlFor="answerInput" className={styles.answerLabel}>
-          Enter the correct form:
-        </label>
-        <input
-          id="answerInput"
-          type="text"
-          className={styles.input}
-          value={userAnswer}
-          onChange={(e) => setUserAnswer(e.target.value)}
-          placeholder="Type your answer here"
-          disabled={isSubmitted}
-        />
-        <div className={styles.buttonContainer}>
-          {!isSubmitted && (
-            <button onClick={handleSubmit} disabled={!userAnswer.trim()}>
-              Submit
-            </button>
-          )}
-          {isSubmitted && <button onClick={handleExplain}>Explain</button>}
-          {isSubmitted && <button onClick={handleNext}>Next</button>}
-        </div>
-      </section>
-
-      {/* 4. Feedback (Correct/Wrong + Explanation) */}
-      {result && <div className={styles.result}>{result}</div>}
-      {showExplanation && (
-        <div className={styles.explanation}>{explanation}</div>
-      )}
+      </main>
     </div>
   );
 }

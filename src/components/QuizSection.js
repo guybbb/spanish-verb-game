@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Quiz from "./Quiz";
+import styles from "./QuizSection.module.css";
 
 export default function QuizSection({ title, questions }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -45,20 +46,19 @@ export default function QuizSection({ title, questions }) {
   const currentQuestion = questions[currentIndex];
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>{title} Quiz</h2>
+    <div>
       <Quiz
         key={currentIndex}
         question={currentQuestion}
         onAnswer={handleAnswer}
+        total={questions.length}
+        current={currentIndex + 1}
       />
-      <p>
-        Score: {score.correct}/{score.total} (
-        {score.total > 0
+      <div className={styles.score}>
+        Score: {score.correct}/{score.total} ({score.total > 0
           ? ((score.correct / score.total) * 100).toFixed(0)
-          : 0}
-        %)
-      </p>
+          : 0}%)
+      </div>
     </div>
   );
 }

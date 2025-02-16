@@ -1,128 +1,136 @@
 .quizContainer {
-  /* Center and constrain the container */
   max-width: 600px;
-  margin: 2rem auto;
-  
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background: white;
 }
 
-/* Minimal top bar for persona/verb info */
-.topBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header {
+  margin-bottom: 2.5rem;
+}
+
+.progressBar {
   margin-bottom: 1.5rem;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  display: block;
+  text-align: right;
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .personaVerb {
-  font-size: 1.2em;
-  font-weight: bold;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-top: 1.5rem;
+  letter-spacing: 0.025em;
 }
 
-/* Input & buttons area */
-.answerSection {
+.exampleCard {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.cardSentence {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #1e293b;
   margin-bottom: 1.5rem;
+}
+
+.wordTranslations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  background: white;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+}
+
+.wordTranslations p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
 }
 
 .input {
   width: 100%;
-  padding: 10px;
-  margin: 0.75rem 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
+  padding: 1rem 1.25rem;
+  font-size: 1.125rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .buttonContainer {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.quizContainer button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-  color: #fff;
-  background-color: #3498db;
-}
-
-/* Feedback & Explanation */
-.result {
   margin-top: 1rem;
-  font-size: 1.2em;
-  font-weight: bold;
-  min-height: 1.4em;
 }
 
-.explanation {
-  margin-top: 0.5rem;
-  color: #555;
-  line-height: 1.4;
-}
-
-/* Example Card */
-.exampleCard {
-  background: #f9f9f9;
-  border-radius: 6px;
+.button {
+  width: 100%;
   padding: 1rem;
-  margin-top: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-size: 1.125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.cardTitle {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.1em;
-  font-weight: bold;
+.buttonNeutral {
+  background: #3b82f6;
 }
 
-.cardSentence {
-  margin: 0.5rem 0 1rem 0;
-  line-height: 1.4;
-  font-size: 1.05em;
+.buttonNeutral:hover:not(:disabled) {
+  background: #2563eb;
 }
 
-.wordTranslations p {
-  margin: 0.25rem 0;
+.buttonCorrect {
+  background: #22c55e;
 }
 
-/* Glow animations for correct/wrong answers */
-.correctFeedback {
-  animation: correctGlow 1.5s forwards;
+.buttonCorrect:hover {
+  background: #16a34a;
 }
 
-.wrongFeedback {
-  animation: wrongGlow 1.5s forwards;
+.buttonWrong {
+  background: #ef4444;
 }
 
-@keyframes correctGlow {
-  0% {
-    box-shadow: 0 0 0px #2ecc71;
-  }
-  50% {
-    box-shadow: 0 0 20px #2ecc71;
-  }
-  100% {
-    box-shadow: 0 0 0px #2ecc71;
-  }
+.buttonWrong:hover {
+  background: #dc2626;
 }
 
-@keyframes wrongGlow {
-  0% {
-    box-shadow: 0 0 0px #e74c3c;
-  }
-  50% {
-    box-shadow: 0 0 20px #e74c3c;
-  }
-  100% {
-    box-shadow: 0 0 0px #e74c3c;
-  }
+.button:disabled {
+  background: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
