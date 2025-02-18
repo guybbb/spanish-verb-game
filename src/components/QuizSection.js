@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Quiz from "./Quiz";
+import Quiz from "./Quiz/Quiz";
 import styles from "./QuizSection.module.css";
 import StatsView from "./StatsView";
 
