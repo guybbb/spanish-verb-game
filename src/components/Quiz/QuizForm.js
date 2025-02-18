@@ -2,15 +2,10 @@
 import { useState } from "react";
 import styles from "./Quiz.module.css";
 
-export function QuizForm({ question, onSubmit, onNext, isSubmitted, isCorrect }) {
-  const { correctAnswer } = question;
+export function QuizForm({ onSubmit, onNext, isSubmitted, isCorrect }) {
   const [userAnswer, setUserAnswer] = useState("");
-  const [result, setResult] = useState("");
 
-  const handleSubmit = () => {
-    setResult(
-      isCorrect ? "Correct! 🎉" : `Wrong! ❌ (Correct: ${correctAnswer})`
-    );
+  const handleSubmit = () => {    
     onSubmit(userAnswer);
   };
 

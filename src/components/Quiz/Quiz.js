@@ -14,9 +14,9 @@ export default function Quiz({ question, onAnswer, current, total }) {
       correctAnswer: question.correctAnswer,
       // areEqual: correct
     });
-    // const correct = userAnswer.toLowerCase() === question.correctAnswer.toLowerCase();
+    const correct = userAnswer.toLowerCase() === question.correctAnswer.toLowerCase();
    
-    setIsCorrect(userAnswer);
+    setIsCorrect(correct);
     setIsSubmitted(true);
   };
 
@@ -54,6 +54,7 @@ export default function Quiz({ question, onAnswer, current, total }) {
           onSubmit={handleSubmit}
           onNext={handleNext}
           isSubmitted={isSubmitted}
+          isCorrect={isCorrect}
         />
       </main>
     </div>
