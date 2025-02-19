@@ -48,10 +48,28 @@ function isVerbMastered(progress: Progress, verb, tense) {
   const successes = progress[verb][tense].successes;
 
   // Sum only the values that exist in the attempts object
-  const totalAttempts  = Object.values(attempts).reduce((sum:number, count:number) => sum + count, 0) || 0;
-  const totalSuccesses = Object.values(successes).reduce((sum:number, count:number) => sum + count, 0) || 0;
+  const totalAttempts =
+    Object.values(attempts).reduce(
+      (sum: number, count: number) => sum + count,
+      0
+    ) || 0;
+  const totalSuccesses =
+    Object.values(successes).reduce(
+      (sum: number, count: number) => sum + count,
+      0
+    ) || 0;
 
-  return totalAttempts >= 10 && (totalSuccesses / totalAttempts) >= 0.8;
+  return totalAttempts >= 10 && totalSuccesses / totalAttempts >= 0.8;
+}
+
+export function getAvailableVerbs(selectedTense) {
+  const progress = loadProgress();
+  return verbos()
+    .slice(0, 10) // Take the first 10 verbs from the ordered list
+    .map(verbData => ({
+      infinitive: verbData.infinitivo,
+      isMastered: isVerbMastered(progress, verbData.infinitivo, selectedTense)
+    }));
 }
 
 /**
@@ -62,7 +80,10 @@ function getTopVerbs(selectedTense) {
 
   // Get verbs in order of importance and filter out mastered ones
   const remainingVerbs = verbos()
-    .filter((verbData) => !isVerbMastered(progress, verbData.infinitivo, selectedTense)) // ⬅️ Ignore mastered verbs
+    .filter(
+      (verbData) =>
+        !isVerbMastered(progress, verbData.infinitivo, selectedTense)
+    ) // ⬅️ Ignore mastered verbs
     .slice(0, 2); // ⬅️ Pick exactly 2 verbs
 
   return remainingVerbs;
@@ -71,14 +92,24 @@ function getTopVerbs(selectedTense) {
 /**
  * Generate quiz questions, excluding mastered verbs.
  */
-export function generateQuestionsForTense(selectedTense) {
-  const topVerbs = getTopVerbs(selectedTense);
+export function generateQuestionsForTense(selectedTense, selectedVerbs = null) {
+  // If no verbs provided, use getTopVerbs for automatic selection
+  const verbs = selectedVerbs 
+    ? verbos()
+        .filter(verbData => selectedVerbs.includes(verbData.infinitivo))
+        .slice(0, 2)
+    : getTopVerbs(selectedTense);
 
-  if (topVerbs.length === 0) {
-    return [{ questionText: "¡Felicidades! Has dominado todos los verbos en este tiempo." }];
+  if (verbs.length === 0) {
+    return [
+      {
+        questionText:
+          "¡Felicidades! Has dominado todos los verbos en este tiempo.",
+      },
+    ];
   }
 
-  const questions = topVerbs
+  const questions = verbs
     .map((verbData) => {
       if (!verbData.indicativo || !verbData.indicativo[selectedTense]) {
         return null;
@@ -89,8 +120,12 @@ export function generateQuestionsForTense(selectedTense) {
 
       return persons.map((person) => {
         const correctAnswer = tenseData[person];
-        const questionText = `¿Cuál es la forma de "${personLabels[person] || person}" del verbo "${verbData.infinitivo}" en el tiempo "${selectedTense}"?`;
-        const translation = `Conjugate "${verbData.infinitivo}" for "${personLabels[person] || person}" in the "${selectedTense}" tense.`;
+        const questionText = `¿Cuál es la forma de "${
+          personLabels[person] || person
+        }" del verbo "${verbData.infinitivo}" en el tiempo "${selectedTense}"?`;
+        const translation = `Conjugate "${verbData.infinitivo}" for "${
+          personLabels[person] || person
+        }" in the "${selectedTense}" tense.`;
 
         return {
           verb: verbData.infinitivo,
