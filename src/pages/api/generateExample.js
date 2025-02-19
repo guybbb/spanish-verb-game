@@ -33,7 +33,7 @@ export default async function handler(req, res) {
   const person = match ? match[2] : "unknownPerson";
   const tense = match ? match[3] : "unknownTense";
 
-  console.log(verb, person, tense)
+  console.log('generating an example for:',verb, person, tense)
 
   // Create a cache directory and file path for this verb/person/tense combination.
   const cacheDir = path.join(process.cwd(), "cache");
@@ -56,6 +56,7 @@ export default async function handler(req, res) {
     return;
   }
 
+  console.log('not found in cache - asking AI')
   // Otherwise, generate a new example using OpenAI.
   try {
     const completion = await openai.beta.chat.completions.parse({

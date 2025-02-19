@@ -15,31 +15,46 @@ export default function Home() {
     setIsLoading(true);
     try {
       const qs = generateQuestionsForTense(tense);
-      
+
+      // If all verbs are mastered, show a completion message
+      if (qs.length === 0) {
+        setSelectedTense(tense);
+        setQuestions([]);
+        setIsLoading(false);
+        return;
+      }
+
       // Pre-generate examples for all questions
       const questionsWithExamples = await Promise.all(
         qs.map(async (question) => {
           const exampleData = await generateExample({
             verb: question.verb,
             person: question.person,
-            tense: question.tense
+            tense: question.tense,
           });
-          
+
           return {
             ...question,
-            exampleData
+            exampleData,
           };
         })
       );
-      
+
       setSelectedTense(tense);
       setQuestions(questionsWithExamples);
     } catch (error) {
-      console.error('Failed to generate lesson:', error);
+      console.error("Failed to generate lesson:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleRestartLesson = () => {
+    if (selectedTense) {
+      handlePickTense(selectedTense); 
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -49,8 +64,17 @@ export default function Home() {
     );
   }
 
+  if (selectedTense && questions.length === 0) {
+    return (
+      <main className={styles.container}>
+        <h2>¡Felicidades! Has dominado todos los verbos en este tiempo.</h2>
+        <button onClick={() => setSelectedTense(null)}>Escoger otro tiempo</button>
+      </main>
+    );
+  }
+
   if (selectedTense && questions.length > 0) {
-    return <QuizSection title={selectedTense} questions={questions} />;
+    return <QuizSection title={selectedTense} questions={questions} onChangeTense={handleRestartLesson} />;
   }
 
   return (

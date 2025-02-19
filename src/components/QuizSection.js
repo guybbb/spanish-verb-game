@@ -3,35 +3,34 @@ import { useState, useEffect } from "react";
 import Quiz from "./Quiz/Quiz";
 import styles from "./QuizSection.module.css";
 import StatsView from "./StatsView";
+import { updateProgress } from "../utils/generateQuestions";
 
-export default function QuizSection({ title, questions }) {
+export default function QuizSection({ title, questions, onChangeTense }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [mistakes, setMistakes] = useState([]);
   const [completed, setCompleted] = useState(false);
 
   const handleAnswer = (isCorrect, question) => {
-    setScore(prev => ({
+    updateProgress(question.verb, question.tense, question.person, isCorrect);
+
+    setScore((prev) => ({
       correct: prev.correct + (isCorrect ? 1 : 0),
       total: prev.total + 1,
     }));
 
     if (!isCorrect) {
-      setMistakes(prev => [...prev, {
-        verb: question.verb,
-        person: question.person,
-        correctAnswer: question.correctAnswer
-      }]);
+      setMistakes((prev) => [
+        ...prev,
+        {
+          verb: question.verb,
+          person: question.person,
+          correctAnswer: question.correctAnswer,
+        },
+      ]);
     }
 
-    setCurrentIndex(prev => prev + 1);
-  };
-
-  const handleRestart = () => {
-    setCurrentIndex(0);
-    setScore({ correct: 0, total: 0 });
-    setMistakes([]);
-    setCompleted(false);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   if (currentIndex >= questions.length) {
@@ -40,10 +39,10 @@ export default function QuizSection({ title, questions }) {
         stats={{
           mistakes,
           totalQuestions: questions.length,
-          tense: title
+          tense: title,
         }}
-        onRestart={handleRestart}
-        onChangeTense={() => window.location.reload()}
+        onRestart={onChangeTense}
+        onChangeTense={onChangeTense}
       />
     );
   }
